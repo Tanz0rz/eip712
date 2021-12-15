@@ -1,39 +1,44 @@
-import {EIP712TypedData, MessageTypes} from './models';
-import {TypedDataUtils, TypedMessage} from 'eth-sig-util';
+import { _TypedDataEncoder } from '@ethersproject/hash';
 
-// I don't think this part is correct based on the docs: https://github.com/gnosis/zodiac-module-reality#domain
-const typedData: EIP712TypedData = {
-    primaryType: 'Transaction',
-    types: {
-        Transaction: [
-            { type: 'address', name: 'to' },
-            { type: 'uint256', name: 'value' },
-            { type: 'bytes', name: 'data' },
-            { type: 'uint8', name: 'operation' },
-            { type: 'uint256', name: 'nonce' }
-        ]
-    },
-    domain: {
-        chainId: 1,
-        verifyingContract: '0x1234'
-    },
-    message: {
-        to:'0x60AF6197d08dEa71A22581f13B72018B8C2671A7',
-        value:'10000000000000000',
-        data:'0x',
-        operation:'0',
-        nonce:'0',
-    },
-}
+const tx = {
+    to: "0x1111111254fb6c44bac0bed2854e76f90643097d",
+    value: "1000000000000000000",
+    data: "0x",
+    operation: "0",
+    nonce: "0"
+};
 
-const hashedStructure = TypedDataUtils.hashStruct(
-    typedData.primaryType,
-    typedData.message,
-    typedData.types,
-    true
-).toString('hex');
+const EIP712_TYPES = {
+    Transaction: [
+        {
+            name: 'to',
+            type: 'address'
+        },
+        {
+            name: 'value',
+            type: 'uint256'
+        },
+        {
+            name: 'data',
+            type: 'bytes'
+        },
+        {
+            name: 'operation',
+            type: 'uint8'
+        },
+        {
+            name: 'nonce',
+            type: 'uint256'
+        }
+    ]
+};
 
-const signedDataHash = '0x' + TypedDataUtils.sign(typedData as TypedMessage<MessageTypes>).toString('hex');
+const domain = {
+    chainId: 4,
+    verifyingContract: '0xe97253Ad60F66f7B359615FF7aB7Ecd9CD37fE1C'
+};
+
+const hashedStructure = _TypedDataEncoder.hash(domain, EIP712_TYPES, tx)
 
 console.log('hashedStructure: ', hashedStructure);
-console.log('signedDataHash: ', signedDataHash);
+// https://snapshot.org/#/bitdecay.eth/proposal/0x8e4963330cbc3377729231f9ff8d6ead8a6dfb10e520786a31ae4ae68412cd8b
