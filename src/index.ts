@@ -1,4 +1,7 @@
 import { _TypedDataEncoder } from '@ethersproject/hash';
+import {Interface} from "@ethersproject/abi";
+
+const abi = require('./safe-snap-abi.json');
 
 const tx = {
     to: "0x1111111254fb6c44bac0bed2854e76f90643097d",
@@ -38,7 +41,17 @@ const domain = {
     verifyingContract: '0xe97253Ad60F66f7B359615FF7aB7Ecd9CD37fE1C'
 };
 
-const hashedStructure = _TypedDataEncoder.hash(domain, EIP712_TYPES, tx)
+const proposalId = '0x8e4963330cbc3377729231f9ff8d6ead8a6dfb10e520786a31ae4ae68412cd8b';
+
+const hashedStructure = _TypedDataEncoder.hash(domain, EIP712_TYPES, tx);
+
+const iface = new Interface(abi);
+const callData = iface.encodeFunctionData('addProposal', [
+    proposalId,
+    [hashedStructure]
+]);
 
 console.log('hashedStructure: ', hashedStructure);
+console.log('callData: ', callData);
+
 // https://snapshot.org/#/bitdecay.eth/proposal/0x8e4963330cbc3377729231f9ff8d6ead8a6dfb10e520786a31ae4ae68412cd8b
