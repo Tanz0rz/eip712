@@ -28,11 +28,9 @@ const data:EIP712TypedData = {
         value:"10000000000000000"
     },
     primaryType: 'EIP712Domain',
-    domain: {
-        EIP712Domain: [
-            { type: "uint256", name: "chainId" },
-            { type: "address", name: "verifyingContract" }
-        ]
+    domain: { // I don't think this part is correct based on the docs: https://github.com/gnosis/zodiac-module-reality#domain
+        chainId: 1,
+        verifyingContract: '0x1234'
     },
     types: {
         Transaction: [
