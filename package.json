@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "eth-sig-util": "^3.0.1"
+  }
+}
