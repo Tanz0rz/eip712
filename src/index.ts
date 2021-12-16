@@ -7,6 +7,7 @@ const tx = {
     to: "0x1111111254fb6c44bac0bed2854e76f90643097d",
     value: "1000000000000000000",
     data: "0x",
+    /// @param operation Operation type of module transaction: 0 == call, 1 == delegate call.
     operation: "0",
     nonce: "0"
 };
